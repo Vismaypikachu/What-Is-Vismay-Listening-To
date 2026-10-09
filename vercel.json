@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build && npm run render-postbuild",
+  "outputDirectory": "client/build",
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "/api"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/index.html"
+    }
+  ]
+}
