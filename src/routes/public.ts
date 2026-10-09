@@ -55,20 +55,35 @@ const getAccessToken = async (): Promise<string> => {
   }
 };
 
+const getDisplayDeviceName = (name: string | undefined): string => {
+  const deviceNames: Record<string, string> = {
+    "iPhone": "NotUriPhone15Pro",
+    "VISMAYS-PC": "VISMAYS-PC",
+    "Tesla Media Player": "Car",
+    "SAMSUNG FAMILY HUB (FC3C)": "Fridge for some reason",
+  };
+
+  return deviceNames[name ?? ""] ?? name ?? "Unknown device";
+};
+
+
 const fetchPlayback = async (): Promise<PublicPlayback | null> => {
   const accessToken = await getAccessToken();
   const spotifyApi = new SpotifyWebApi();
   spotifyApi.setAccessToken(accessToken);
   // const response = await spotifyApi.getMyCurrentPlayingTrack();
+  // // const playback: any = response && (response as any).body;
   const response = await spotifyApi.getMyCurrentPlaybackState();
   const playback: any = response?.body;
-  // const playback: any = response && (response as any).body;
+  
+  
   const device = playback?.device
-  ? {
-      name: playback.device.name,
-      type: playback.device.type
-    }
-  : null;
+    ? {
+        name: getDisplayDeviceName(playback.device.name),
+        type: playback.device.type,
+      }
+    : null;
+
   if (!playback) return null;
 
   // Expose only fields used by the public UI; omit playback context and action metadata.

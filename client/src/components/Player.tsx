@@ -233,8 +233,8 @@ const useStyles = makeStyles(theme => ({
     lineHeight: 1.4,
     color: theme.palette.text.primary,
     whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis"
+    overflow: "visible",
+    textOverflow: "unset"
   },
 
   slider: {
