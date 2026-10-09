@@ -353,7 +353,8 @@ const useStyles = makeStyles(theme => ({
     margin: "auto",
     maxWidth: 700,
     position: "relative",
-    textAlign: "center"
+    textAlign: "center",
+    paddingTop: 64
   },
 
   toolbar: {
