@@ -1,4 +1,11 @@
-import { AppBar, Box, Container, Slider, makeStyles } from "@material-ui/core";
+import {
+  AppBar,
+  Box,
+  Container,
+  Slider,
+  Typography,
+  makeStyles
+} from "@material-ui/core";
 import React from "react";
 import SpotifyLogoRoundImage from "../img/spotify-logo-round.png";
 import { CurrentlyPlayingState } from "../types/currentlyPlayingState";
@@ -39,6 +46,10 @@ const Player: React.FC<PlayerProps> = ({
 
   const isPlaying =
     currentlyPlayingSong.currentlyPlayingObject?.is_playing ?? false;
+
+  const deviceName =
+    (currentlyPlayingSong.currentlyPlayingObject as any)?.device?.name ??
+    "Unknown device";
 
   if (
     currentlyPlayingSong.currentlyPlayingObject?.currently_playing_type ===
@@ -88,27 +99,41 @@ const Player: React.FC<PlayerProps> = ({
             </div>
           </div>
 
-          <Box
-            display="inline-flex"
-            alignItems="center"
-            className={classes.sliderWrapper}
-          >
-            <span className={classes.timeControl}>
-              {formatMilliseconds(displayedProgress)}
-            </span>
+          <Box className={classes.progressRow}>
+            <Box
+              display="inline-flex"
+              alignItems="center"
+              className={classes.sliderWrapper}
+            >
+              <span className={classes.timeControl}>
+                {formatMilliseconds(displayedProgress)}
+              </span>
 
-            <Slider
-              value={displayedProgress}
-              valueLabelDisplay="off"
-              min={0}
-              max={durationMs || 1}
-              disabled
-              className={classes.slider}
-            />
+              <Slider
+                value={displayedProgress}
+                valueLabelDisplay="off"
+                min={0}
+                max={durationMs || 1}
+                disabled
+                className={classes.slider}
+              />
 
-            <span className={classes.timeControl}>
-              {formatMilliseconds(durationMs)}
-            </span>
+              <span className={classes.timeControl}>
+                {formatMilliseconds(durationMs)}
+              </span>
+            </Box>
+
+            <Box className={classes.deviceWrapper}>
+              <Typography className={classes.deviceLabel}>
+                Playing on
+              </Typography>
+              <Typography
+                className={classes.deviceName}
+                title={deviceName}
+              >
+                {deviceName}
+              </Typography>
+            </Box>
           </Box>
         </div>
       </Container>
@@ -167,6 +192,14 @@ const useStyles = makeStyles(theme => ({
     textOverflow: "ellipsis"
   },
 
+  progressRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: theme.spacing(2),
+    width: "100%",
+    minWidth: 0
+  },
+
   timeControl: {
     color: theme.palette.text.primary,
     whiteSpace: "nowrap",
@@ -174,14 +207,34 @@ const useStyles = makeStyles(theme => ({
   },
 
   sliderWrapper: {
+    flex: "1 1 auto",
     minWidth: 0,
     width: "100%",
-    boxSizing: "border-box",
+    boxSizing: "border-box"
+  },
 
-    [theme.breakpoints.down("xs")]: {
-      gridColumnStart: 1,
-      gridColumnEnd: 2
-    }
+  deviceWrapper: {
+    flex: "0 0 115px",
+    minWidth: 0,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center"
+  },
+
+  deviceLabel: {
+    fontSize: "0.7rem",
+    lineHeight: 1.3,
+    color: theme.palette.text.primary,
+    opacity: 0.7
+  },
+
+  deviceName: {
+    fontSize: "0.85rem",
+    lineHeight: 1.4,
+    color: theme.palette.text.primary,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis"
   },
 
   slider: {

@@ -10,6 +10,10 @@ interface PublicPlayback {
   progress_ms: number | null;
   is_playing: boolean;
   currently_playing_type: string;
+  device: {
+    name: string;
+    type: string;
+  } | null;
   item: any | null;
 }
 
@@ -55,8 +59,16 @@ const fetchPlayback = async (): Promise<PublicPlayback | null> => {
   const accessToken = await getAccessToken();
   const spotifyApi = new SpotifyWebApi();
   spotifyApi.setAccessToken(accessToken);
-  const response = await spotifyApi.getMyCurrentPlayingTrack();
-  const playback: any = response && (response as any).body;
+  // const response = await spotifyApi.getMyCurrentPlayingTrack();
+  const response = await spotifyApi.getMyCurrentPlaybackState();
+  const playback: any = response?.body;
+  // const playback: any = response && (response as any).body;
+  const device = playback?.device
+  ? {
+      name: playback.device.name,
+      type: playback.device.type
+    }
+  : null;
   if (!playback) return null;
 
   // Expose only fields used by the public UI; omit playback context and action metadata.
@@ -67,6 +79,7 @@ const fetchPlayback = async (): Promise<PublicPlayback | null> => {
       progress_ms: playback.progress_ms,
       is_playing: playback.is_playing,
       currently_playing_type: playback.currently_playing_type,
+      device,
       item: null
     };
   }
@@ -82,6 +95,7 @@ const fetchPlayback = async (): Promise<PublicPlayback | null> => {
     progress_ms: playback.progress_ms,
     is_playing: playback.is_playing,
     currently_playing_type: playback.currently_playing_type,
+    device,
     item: {
       id: item.id,
       name: item.name,
