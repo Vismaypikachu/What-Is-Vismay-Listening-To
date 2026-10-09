@@ -1,4 +1,10 @@
-import { Box, Container, CssBaseline, ThemeProvider } from "@material-ui/core";
+import {
+  Box,
+  Container,
+  CssBaseline,
+  ThemeProvider,
+  makeStyles
+} from "@material-ui/core";
 import { setBasepath, useRedirect, useRoutes } from "hookrouter";
 import React from "react";
 import MetaTags from "./components/MetaTags";
@@ -12,6 +18,7 @@ import About from "./pages/About";
 import LyricsView from "./pages/LyricsView";
 import NotFound from "./pages/NotFound";
 import { PlayingStates } from "./types/currentlyPlayingState";
+import QueueSidebar from "./components/QueueSidebar";
 
 const App: React.FC = () => {
   if (config.client.basename !== undefined) {
@@ -55,6 +62,8 @@ const App: React.FC = () => {
       currentlyPlayingSong.state === PlayingStates.Paused) &&
     currentlyPlayingSong.currentlyPlayingObject !== null;
 
+  const classes = useStyles();
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -78,8 +87,20 @@ const App: React.FC = () => {
             boxSizing: "border-box"
           }}
         >
-          <Container maxWidth="md">
-            {routeResult ?? <NotFound />}
+          <Container maxWidth="xl">
+            <Box className={classes.contentLayout}>
+              <Box className={classes.mainContent}>
+                {routeResult ?? <NotFound />}
+              </Box>
+
+              <Box className={classes.queueColumn}>
+                <QueueSidebar
+                  currentTrackId={
+                    currentlyPlayingSong.currentlyPlayingObject?.item?.id ?? null
+                  }
+                />
+              </Box>
+            </Box>
           </Container>
         </Box>
 
@@ -93,5 +114,40 @@ const App: React.FC = () => {
     </ThemeProvider>
   );
 };
+
+
+const useStyles = makeStyles(theme => ({
+  contentLayout: {
+    display: "grid",
+    gridTemplateColumns: "minmax(0, 1fr) 280px",
+    gap: theme.spacing(3),
+    alignItems: "start",
+
+    [theme.breakpoints.down("sm")]: {
+      gridTemplateColumns: "minmax(0, 1fr)"
+    }
+  },
+
+  mainContent: {
+    minWidth: 0
+  },
+
+  
+  queueColumn: {
+    position: "fixed",
+    top: 145,
+    right: 24,
+    width: 350,
+    maxHeight: "calc(100vh - 245px)",
+    overflowY: "auto",
+    overflowX: "hidden",
+    zIndex: 10,
+
+    [theme.breakpoints.down("sm")]: {
+      display: "none"
+    }
+  }
+}));
+
 
 export default App;

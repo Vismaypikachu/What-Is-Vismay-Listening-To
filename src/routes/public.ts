@@ -156,4 +156,57 @@ router.get("/currently-playing", async (_req, res) => {
   }
 });
 
+
+router.get("/queue", async (_req, res) => {
+  res.setHeader("Cache-Control", "no-store");
+
+  try {
+    const accessToken = await getAccessToken();
+
+    const response = await fetch(
+      "https://api.spotify.com/v1/me/player/queue",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      }
+    );
+
+    if (!response.ok) {
+      const details = await response.text();
+      console.error("Spotify queue request failed:", response.status, details);
+      res.status(response.status).json({
+        error: "Unable to fetch Spotify queue."
+      });
+      return;
+    }
+
+    const data: any = await response.json();
+
+    const queue = (data.queue ?? []).slice(0, 10).map((item: any) => {
+      const isTrack = item.type === "track" || Array.isArray(item.artists);
+
+      return {
+        id: item.id,
+        name: item.name,
+        artists: isTrack
+          ? (item.artists ?? []).map((artist: any) => artist.name)
+          : [item.show?.name ?? item.publisher ?? "Podcast"],
+        imageUrl: isTrack
+          ? item.album?.images?.[0]?.url ?? null
+          : item.images?.[0]?.url ?? item.show?.images?.[0]?.url ?? null,
+        type: item.type ?? "track"
+      };
+    });
+
+    res.json({ queue });
+  } catch (error) {
+    console.error("Failed to fetch Spotify queue:", error);
+    res.status(503).json({
+      error: "Spotify queue is temporarily unavailable."
+    });
+  }
+});
+
+
 export default router;
