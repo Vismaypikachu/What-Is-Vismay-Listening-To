@@ -75,7 +75,6 @@ const App: React.FC = () => {
           <Player
             currentlyPlayingSong={currentlyPlayingSong}
             token={null}
-            readOnly={true}
           />
         ) : null}
       </div>
