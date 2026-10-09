@@ -354,7 +354,8 @@ const useStyles = makeStyles(theme => ({
     maxWidth: 700,
     position: "relative",
     textAlign: "center",
-    paddingTop: 64
+    paddingTop: 8,
+    paddingBottom: 16
   },
 
   toolbar: {

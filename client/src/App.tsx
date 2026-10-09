@@ -67,8 +67,20 @@ const App: React.FC = () => {
           publicMode={true}
         />
 
-        <Box py={3} style={{ overflow: "auto" }}>
-          <Container maxWidth="md">{routeResult ?? <NotFound />}</Container>
+        <Box
+          py={3}
+          style={{
+            overflowY: "auto",
+            overflowX: "hidden",
+            minHeight: 0,
+            paddingTop: 85,
+            paddingBottom: 100,
+            boxSizing: "border-box"
+          }}
+        >
+          <Container maxWidth="md">
+            {routeResult ?? <NotFound />}
+          </Container>
         </Box>
 
         {showPlayer ? (
