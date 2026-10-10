@@ -1,6 +1,7 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import MusicNoteIcon from "@material-ui/icons/MusicNote";
+import NothingPlayingImage from "../../img/thinking.png";
 
 const NoTrackPlaying: React.FunctionComponent = () => {
   return (
@@ -14,6 +15,11 @@ const NoTrackPlaying: React.FunctionComponent = () => {
         <br />
         He's probably lying on the couch or doomscrolling waiting for something to do.
       </Typography>
+      <img
+        src={NothingPlayingImage}
+        height="250"
+        alt="Nothing Playing Right Now"
+      />
     </Box>
   );
 };
