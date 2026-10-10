@@ -11,7 +11,7 @@ const NoTrackPlaying: React.FunctionComponent = () => {
       </Typography>
       <Typography color="textSecondary">
         When Vismay starts playing music on Spotify, the song and synchronized lyrics will appear here.
-
+        <br />
         He's probably lying on the couch or doomscrolling waiting for something to do.
       </Typography>
     </Box>
