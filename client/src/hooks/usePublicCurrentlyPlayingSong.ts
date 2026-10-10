@@ -19,14 +19,16 @@ const usePublicCurrentlyPlayingSong = () => {
       try {
         const playback = await getPublicCurrentlyPlaying();
         if (!mounted) return;
-        if (playback === null) {
+        if (playback === null || !playback.item) {
           setCurrentlyPlaying({
             state: PlayingStates.NotPlaying,
             currentlyPlayingObject: null
           });
         } else {
           setCurrentlyPlaying({
-            state: playback.is_playing ? PlayingStates.Playing : PlayingStates.Paused,
+            state: playback.is_playing
+              ? PlayingStates.Playing
+              : PlayingStates.Paused,
             currentlyPlayingObject: playback
           });
         }
