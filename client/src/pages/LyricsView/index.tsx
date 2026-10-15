@@ -35,19 +35,48 @@ const LyricsView: React.FunctionComponent<IProps> = ({
     return <Advertisement />;
   } else if (currentlyPlayingSong.currentlyPlayingObject?.device?.name === "Car") {
     return (
-      <Box textAlign="center" py={8}>
-        <Typography variant="h4" gutterBottom>
-          Spotify Hijacked!
-        </Typography>
-        <Typography color="textSecondary">
-          The parents have hijacked my Spotify account. What they're playing in the car
-          is NOT what Vismay is listening to.
-        </Typography>
-        <img
-          src={HijackedImage}
-          height="250"
-          alt="Nothing Playing Right Now"
-        />
+      <Box
+        display="flex"
+        flexDirection="column"
+        height="100%"
+        minHeight={0}
+      >
+        {currentlyPlayingSong.currentlyPlayingObject?.device?.name === "Car" && (
+          <Box
+            flexShrink={0}
+            textAlign="center"
+            py={2}
+            px={2}
+            mx={2}
+            mb={1}
+            borderRadius={8}
+            style={{
+              backgroundColor: "rgba(255, 152, 0, 0.12)",
+              border: "2px solid #ff9800"
+            }}
+          >
+            <Typography variant="h5" gutterBottom>
+              🚨 Spotify Hijacked!
+            </Typography>
+            <Typography color="textSecondary">
+              The parents have hijacked my Spotify account. What they're playing
+              in the car is NOT what Vismay is listening to.
+            </Typography>
+            <img
+              src={HijackedImage}
+              height="100"
+              alt="Spotify account hijacked"
+              style={{ maxWidth: "100%", objectFit: "contain" }}
+            />
+          </Box>
+        )}
+
+        <Box flex={1} minHeight={0} overflow="hidden">
+          <TrackPlaying
+            lyricDetails={lyrics}
+            currentlyPlayingSong={currentlyPlayingSong}
+          />
+        </Box>
       </Box>
     );
   } else {

@@ -105,11 +105,22 @@ const QueueSidebar: React.FC<QueueSidebarProps> = ({
 
 const useStyles = makeStyles(theme => ({
     root: {
-        width: "100%",
+        width: 310,
+        flex: "0 0 310px",
         minWidth: 0,
+        maxWidth: "100%",
+        maxHeight: "calc(100vh - 150px)",
+        overflowY: "auto",
+        boxSizing: "border-box",
         padding: theme.spacing(2),
         borderRadius: theme.shape.borderRadius,
-        backgroundColor: theme.palette.background.paper
+        backgroundColor: theme.palette.background.paper,
+
+        [theme.breakpoints.down("sm")]: {
+            width: "100%",
+            flex: "0 0 auto",
+            maxHeight: "none"
+        }
     },
     heading: {
         fontWeight: 700,

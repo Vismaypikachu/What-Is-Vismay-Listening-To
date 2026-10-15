@@ -119,7 +119,7 @@ const App: React.FC = () => {
 const useStyles = makeStyles(theme => ({
   contentLayout: {
     display: "grid",
-    gridTemplateColumns: "minmax(0, 1fr) 280px",
+    gridTemplateColumns: "minmax(0, 1fr) 310px",
     gap: theme.spacing(3),
     alignItems: "start",
 
@@ -132,19 +132,19 @@ const useStyles = makeStyles(theme => ({
     minWidth: 0
   },
 
-  
   queueColumn: {
-    position: "fixed",
-    top: 145,
-    right: 24,
-    width: 350,
-    maxHeight: "calc(100vh - 245px)",
+    position: "sticky",
+    top: 80,
+    minWidth: 0,
+    width: "100%",
+    maxHeight: "calc(100vh - 100px)",
     overflowY: "auto",
     overflowX: "hidden",
     zIndex: 10,
 
     [theme.breakpoints.down("sm")]: {
-      display: "none"
+      position: "static",
+      maxHeight: "none"
     }
   }
 }));
