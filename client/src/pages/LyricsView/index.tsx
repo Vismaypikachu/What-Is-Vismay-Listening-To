@@ -64,7 +64,7 @@ const LyricsView: React.FunctionComponent<IProps> = ({
             </Typography>
             <img
               src={HijackedImage}
-              height="100"
+              height="250"
               alt="Spotify account hijacked"
               style={{ maxWidth: "100%", objectFit: "contain" }}
             />
